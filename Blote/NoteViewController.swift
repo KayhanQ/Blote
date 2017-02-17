@@ -12,12 +12,14 @@ class NoteViewController: UIViewController {
   
   @IBOutlet weak var titleView: UITextView!
   @IBOutlet weak var bodyView: UITextView!
+  @IBOutlet weak var scrollView: UIScrollView!
 
   weak var mainViewDelegate: MainViewDelegate?
   
   var note: Note!
   var shouldBeDeleted: Bool = false
   var isViewDisappearing: Bool = false
+  var keyboardHeight: CGFloat = 0
   
   enum Focus {
     case none
@@ -57,6 +59,21 @@ class NoteViewController: UIViewController {
     } else {
       changeRightNavItemToTrash()
     }
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    
+    let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.viewTapped(_:)))
+    view.addGestureRecognizer(tap)
+    
+    scrollView.delegate = self
+  }
+  
+  func viewTapped(_ sender: UITapGestureRecognizer) {
+    let tapPoint = sender.location(in: self.view)
+    if tapPoint.y >= bodyView.frame.origin.y {
+      bodyView.becomeFirstResponder()
+    }
   }
   
   func changeRightNavItemToDone(_ animated: Bool = false) {
@@ -91,6 +108,27 @@ class NoteViewController: UIViewController {
       }
     }
   }
+  
+  func keyboardWillShow(_ notification:NSNotification) {
+    let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+    let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+    let keyboardRectangle = keyboardFrame.cgRectValue
+    keyboardHeight = keyboardRectangle.height
+
+    let contentInsets = UIEdgeInsetsMake(0, 0, keyboardHeight, 0);
+    scrollView.contentInset = contentInsets
+    scrollView.scrollIndicatorInsets = contentInsets
+  }
+  
+  func keyboardWillHide(_ notification:NSNotification) {
+    let contentInsets = UIEdgeInsets.zero
+    scrollView.contentInset = contentInsets
+    scrollView.scrollIndicatorInsets = contentInsets
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
 }
 
 extension NoteViewController: UITextViewDelegate {
@@ -100,6 +138,7 @@ extension NoteViewController: UITextViewDelegate {
       if !note.hasUserEnteredTitle {
         titleView.text = ""
       }
+    } else if currentFocus == .body {
     }
   }
   
@@ -117,7 +156,10 @@ extension NoteViewController: UITextViewDelegate {
         return true
       }
     } else if currentFocus == .body {
-
+      if text == "\n" && bodyView.selectedRange.location == bodyView.text.characters.count {
+        bodyView.text.append("\n")
+        bodyView.selectedRange = NSRange(location: bodyView.text.characters.count - 1, length: 0)
+      }
     }
     return true
   }
@@ -126,5 +168,11 @@ extension NoteViewController: UITextViewDelegate {
     if !note.hasUserEnteredTitle && !isViewDisappearing {
       titleView.text = note.getDisplayableTitle()
     }
+  }
+}
+
+extension NoteViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    
   }
 }
