@@ -25,6 +25,9 @@ class MainViewController: UIViewController {
     tableView.dataSource = self
     //tableView.contentInset = UIEdgeInsetsMake(0, 20, 0, 0)
     
+    tableView.allowsSelectionDuringEditing = false
+    tableView.allowsMultipleSelectionDuringEditing = true
+
     tableView.rowHeight = UITableViewAutomaticDimension
     tableView.estimatedRowHeight = 80
     tableView.tableFooterView = UIView(frame: .zero)
@@ -44,8 +47,13 @@ class MainViewController: UIViewController {
   }
   
   func createData() {
-    let note1 = Note()
-    persistentDataStore.notes.append(note1)
+    for i in 0..<100 {
+      let note1 = Note()
+      note1.title = "Note " + String(i)
+      note1.body = "Interesting factoids"
+      persistentDataStore.notes.append(note1)
+    }
+
   }
   
   func createNavBar() {
@@ -53,11 +61,24 @@ class MainViewController: UIViewController {
     navigationController?.navigationBar.backgroundColor = UIColor.white
     navigationController?.navigationBar.tintColor = UIColor.orange
     
+    let editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(self.editTapped(_:)))
+    editButton.title = "Select"
+    navigationItem.leftBarButtonItem = editButton
+    
     let newNote = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(self.newNoteTapped(_:)))
     navigationItem.rightBarButtonItem = newNote
     
   }
   
+  func editTapped(_ onboardingItem: UINavigationItem) {
+    if tableView.isEditing {
+      onboardingItem.title = "Select"
+      tableView.setEditing(false, animated: true)
+    } else {
+      onboardingItem.title = "Done"
+      tableView.setEditing(true, animated: true)
+    }
+  }
   
   func newNoteTapped(_ onboardingItem: UINavigationItem) {
     let note = Note()
@@ -94,12 +115,30 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.title.attributedText = NSAttributedString(string: note.getDisplayableTitle())
     cell.body.attributedText = NSAttributedString(string: note.body)
     
+    let backgroundView = UIView()
+    backgroundView.backgroundColor = UIColor.clear
+    cell.selectedBackgroundView = backgroundView
+    
     return cell
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    pushNoteVCWithNote(persistentDataStore.notes[indexPath.row])
+    if !tableView.isEditing {
+      pushNoteVCWithNote(persistentDataStore.notes[indexPath.row])
+    }
   }
+  
+  func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+  
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    var itemToMove = persistentDataStore.notes[sourceIndexPath.row]
+    persistentDataStore.notes.remove(at: sourceIndexPath.row)
+    persistentDataStore.notes.insert(itemToMove, at: destinationIndexPath.row)
+  }
+  
+  
 }
 
 extension MainViewController: MainViewDelegate {

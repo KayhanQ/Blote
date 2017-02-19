@@ -20,7 +20,8 @@ class NoteViewController: UIViewController {
   var shouldBeDeleted: Bool = false
   var isViewDisappearing: Bool = false
   var keyboardHeight: CGFloat = 0
-  
+  var keyboardFrame: CGRect = CGRect.zero
+
   enum Focus {
     case none
     case title
@@ -50,8 +51,8 @@ class NoteViewController: UIViewController {
     bodyView.delegate = self
     bodyView.text = note.body
 
-    let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
-    navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
+    makeNavigationBar()
+
     
     if !note.hasUserEnteredTitle && !note.hasUserEnteredBody {
       titleView.becomeFirstResponder()
@@ -67,6 +68,11 @@ class NoteViewController: UIViewController {
     view.addGestureRecognizer(tap)
     
     scrollView.delegate = self
+  }
+  
+  func makeNavigationBar() {
+    let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
   }
   
   func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -114,7 +120,8 @@ class NoteViewController: UIViewController {
     let keyboardFrame:NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
     let keyboardRectangle = keyboardFrame.cgRectValue
     keyboardHeight = keyboardRectangle.height
-
+    self.keyboardFrame = keyboardRectangle
+    
     let contentInsets = UIEdgeInsetsMake(0, 0, keyboardHeight, 0);
     scrollView.contentInset = contentInsets
     scrollView.scrollIndicatorInsets = contentInsets
@@ -139,6 +146,7 @@ extension NoteViewController: UITextViewDelegate {
         titleView.text = ""
       }
     } else if currentFocus == .body {
+      //scrollToCursorPositionIfBelowKeyboard()
     }
   }
   
@@ -156,10 +164,11 @@ extension NoteViewController: UITextViewDelegate {
         return true
       }
     } else if currentFocus == .body {
-      if text == "\n" && bodyView.selectedRange.location == bodyView.text.characters.count {
-        bodyView.text.append("\n")
-        bodyView.selectedRange = NSRange(location: bodyView.text.characters.count - 1, length: 0)
-      }
+      //scrollToCursorPositionIfBelowKeyboard()
+//      if text == "\n" && bodyView.selectedRange.location == bodyView.text.characters.count {
+//        bodyView.text.append("\n")
+//        bodyView.selectedRange = NSRange(location: bodyView.text.characters.count - 1, length: 0)
+//      }
     }
     return true
   }
@@ -168,6 +177,30 @@ extension NoteViewController: UITextViewDelegate {
     if !note.hasUserEnteredTitle && !isViewDisappearing {
       titleView.text = note.getDisplayableTitle()
     }
+  }
+  
+  private func scrollToCursorPositionIfBelowKeyboard() {
+    let caret = bodyView.caretRect(for: bodyView.selectedTextRange!.start)
+    
+    print(caret)
+    // Remember, the y-scale starts in the upper-left hand corner at "0", then gets
+    // larger as you go down the screen from top-to-bottom. Therefore, the caret.origin.y
+    // being larger than keyboardTopBorder indicates that the caret sits below the
+    // keyboardTopBorder, and the textView needs to scroll to the position.
+    if caret.origin.y > keyboardFrame.origin.y {
+      scrollView.scrollRectToVisible(caret, animated: true)
+      //textView.scrollRectToVisible(caret, animated: true)
+      print("scroll")
+    }
+  }
+  
+  private func scrollToCursorPosition() {
+    
+    let textPosition = bodyView.position(within: bodyView.selectedTextRange!, atCharacterOffset: 0)
+    let caret = bodyView.caretRect(for: textPosition!)
+  
+    print(caret)
+    //textView.scrollRectToVisible(caret, animated: true)
   }
 }
 
