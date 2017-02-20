@@ -24,7 +24,9 @@ class MainViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     //tableView.contentInset = UIEdgeInsetsMake(0, 20, 0, 0)
+    tableView.allowsSelection = true
     
+    //tableView.allowsMultipleSelection = false
     tableView.allowsSelectionDuringEditing = false
     tableView.allowsMultipleSelectionDuringEditing = true
 
@@ -38,7 +40,15 @@ class MainViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    tableView.reloadData()
+
+    if let selectedIndexPath = tableView.indexPathForSelectedRow {
+      tableView.deselectRow(at: selectedIndexPath, animated: true)
+    }
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(true)
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -83,11 +93,6 @@ class MainViewController: UIViewController {
     let note = Note()
     persistentDataStore.notes.append(note)
     pushNoteVCWithNote(note)
-    
-//    let onboardingVC = OnboardingViewController.instantiate()
-//    let backButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
-//    navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-//    navigationController?.pushViewController(onboardingVC, animated: true)
   }
   
   func pushNoteVCWithNote(_ note: Note) {
@@ -114,9 +119,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.title.attributedText = NSAttributedString(string: note.getDisplayableTitle())
     cell.body.attributedText = NSAttributedString(string: note.body)
     
-    let backgroundView = UIView()
-    backgroundView.backgroundColor = UIColor.clear
-    cell.selectedBackgroundView = backgroundView
+    //cell.selectionStyle = .gray
+//    let backgroundView = UIView()
+//    backgroundView.backgroundColor = UIColor.clear
+//    cell.selectedBackgroundView = backgroundView
     
     return cell
   }
@@ -127,12 +133,16 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
   }
   
+  func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    
+  }
+  
   func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
     return true
   }
   
   func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    var itemToMove = persistentDataStore.notes[sourceIndexPath.row]
+    let itemToMove = persistentDataStore.notes[sourceIndexPath.row]
     persistentDataStore.notes.remove(at: sourceIndexPath.row)
     persistentDataStore.notes.insert(itemToMove, at: destinationIndexPath.row)
   }

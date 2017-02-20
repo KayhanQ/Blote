@@ -41,7 +41,7 @@ class NoteViewController: UIViewController {
   static func instantiate() -> NoteViewController {
     return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NoteViewController") as! NoteViewController
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 

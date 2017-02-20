@@ -28,7 +28,7 @@
         <!--Main View Controller-->
         <scene sceneID="GOY-5t-5dU">
             <objects>
-                <viewController id="xll-TN-i0s" customClass="MainViewController" customModule="Blote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xll-TN-i0s" customClass="MainViewController" customModule="Blote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3cM-0m-rgj"/>
                         <viewControllerLayoutGuide type="bottom" id="thT-0d-aI4"/>
@@ -37,14 +37,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6b4-7O-xLj">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="75" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6b4-7O-xLj">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoteCell" rowHeight="75" id="uQE-C2-87j" customClass="NoteTableViewCell" customModule="Blote" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uQE-C2-87j" id="kBU-Yd-Val">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="uQE-C2-87j" id="kBU-Yd-Val">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -83,6 +83,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="GAY-nZ-PB7" secondAttribute="trailing" constant="16" id="yZx-US-uj1"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="body" destination="BkH-nW-X6S" id="KH2-CN-tT4"/>
@@ -113,7 +114,7 @@
         <!--Note View Controller-->
         <scene sceneID="Dha-lZ-Bh8">
             <objects>
-                <viewController storyboardIdentifier="NoteViewController" id="oOP-hF-wLu" customClass="NoteViewController" customModule="Blote" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoteViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oOP-hF-wLu" customClass="NoteViewController" customModule="Blote" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZdC-t3-wjo"/>
                         <viewControllerLayoutGuide type="bottom" id="sab-8h-Jeq"/>
