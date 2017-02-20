@@ -62,7 +62,7 @@ class MainViewController: UIViewController {
     for i in 0..<100 {
       let note1 = Note()
       note1.title = "Note " + String(i)
-      note1.body = "If the www.google.com above-mentioned international glyphs were not enough, we can also see a https://medium.design/cast-of-characters-17eaa82755cf#.ed8743xvm set of accents meant to combine with other characters to create diacritics. Those include dialytika tonos, itself a combination of dialytika and tonos, indicating that a (Greek) vowel should both pronounced separately (dialytika) and stressed (tonos). Most of the accents beautiful names — circumflex, diaeresis, macron, breve — but my favourite one is ogonek, literally Polish for little tail, used in this language’s ą and ę."
+      note1.body = "If the above-mentioned international glyphs were not enough, we can also see a set of accents meant to combine with other characters to create diacritics. \nhttps://medium.design/cast-of-characters-17eaa82755cf#.ed8743xvm \n Those include dialytika tonos, itself a combination of dialytika and tonos, indicating that a (Greek) vowel should both pronounced separately (dialytika) and stressed (tonos). Most of the accents beautiful names — circumflex, diaeresis, macron, breve — but my favourite one is ogonek, literally Polish for little tail, used in this language’s ą and ę. \nwww.google.com"
       persistentDataStore.notes.append(note1)
     }
   }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class NoteViewController: UIViewController {
   
@@ -50,8 +51,9 @@ class NoteViewController: UIViewController {
 
     bodyView.delegate = self
     bodyView.text = note.body
-    bodyView.linkTextAttributes = [NSFontAttributeName: FontHelper.latoMedium(),
-                                   NSForegroundColorAttributeName: UIColor.green]
+    bodyView.linkTextAttributes = [//NSForegroundColorAttributeName: UIColor.orange,
+                                   NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue | NSUnderlineStyle.patternSolid.rawValue]
+    
     
     if !note.hasUserEnteredTitle && !note.hasUserEnteredBody {
       titleView.becomeFirstResponder()
@@ -197,15 +199,18 @@ extension NoteViewController: UITextViewDelegate {
     }
     return true
   }
-  
-  
+
+  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+    let webView = SFSafariViewController(url: URL)
+    navigationController?.present(webView, animated: true, completion: nil)
+    return false
+  }
   
   func textViewDidEndEditing(_ textView: UITextView) {
     if !note.hasUserEnteredTitle && !isViewDisappearing {
       titleView.text = note.getDisplayableTitle()
     }
     bodyView.isEditable = false
-    //bodyView.dataDetectorTypes = UIDataDetectorTypes.link
   }
 }
 
