@@ -50,8 +50,8 @@ class NoteViewController: UIViewController {
 
     bodyView.delegate = self
     bodyView.text = note.body
-
-    makeNavigationBar()
+    bodyView.linkTextAttributes = [NSFontAttributeName: FontHelper.latoMedium(),
+                                   NSForegroundColorAttributeName: UIColor.green]
     
     if !note.hasUserEnteredTitle && !note.hasUserEnteredBody {
       titleView.becomeFirstResponder()
@@ -69,6 +69,10 @@ class NoteViewController: UIViewController {
     scrollView.delegate = self
   }
   
+  func bodyTextViewTapped(_ sender: UITapGestureRecognizer) {
+    
+  }
+  
   func makeNavigationBar() {
     let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
     navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
@@ -76,8 +80,23 @@ class NoteViewController: UIViewController {
   
   func viewTapped(_ sender: UITapGestureRecognizer) {
     let tapPoint = sender.location(in: self.view)
+    
     if tapPoint.y >= bodyView.frame.origin.y {
+      if currentFocus == .title {
+        titleView.resignFirstResponder()
+        return
+      }
+      
+      bodyView.isEditable = true
+      
+      let layoutManager = bodyView.layoutManager
+      var location: CGPoint = sender.location(in: bodyView)
+      location.x -= bodyView.textContainerInset.left
+      location.y -= bodyView.textContainerInset.top
+      let charIndex = layoutManager.characterIndex(for: location, in: bodyView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+      
       bodyView.becomeFirstResponder()
+      bodyView.selectedRange = NSRange.init(location: charIndex, length: 0)
     }
   }
   
@@ -157,21 +176,36 @@ extension NoteViewController: UITextViewDelegate {
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
     if currentFocus == .title {
       if text == "\n" {
+        titleView.resignFirstResponder()
+        bodyView.isEditable = true
         bodyView.becomeFirstResponder()
         return false
       } else {
         return true
       }
     } else if currentFocus == .body {
-
+//      if range.location > 0 {
+//        let characters = textView.text.characters
+//        let index = characters.index(characters.startIndex, offsetBy: range.location - 1)
+//        let characterAtIndex = characters[index]
+//        if characterAtIndex == "#" {
+//          textView.text.remove(at: index)
+//          textView.typingAttributes[NSFontAttributeName] = FontHelper.latoMedium()
+//          textView.selectedRange = NSRange.init(location: range.location - 1, length: range.length)
+//        }
+//      }
     }
     return true
   }
+  
+  
   
   func textViewDidEndEditing(_ textView: UITextView) {
     if !note.hasUserEnteredTitle && !isViewDisappearing {
       titleView.text = note.getDisplayableTitle()
     }
+    bodyView.isEditable = false
+    //bodyView.dataDetectorTypes = UIDataDetectorTypes.link
   }
 }
 

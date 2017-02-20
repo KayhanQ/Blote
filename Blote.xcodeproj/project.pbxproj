@@ -16,6 +16,7 @@
 		040E423E1E53568E00D85041 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E423D1E53568E00D85041 /* MainViewController.swift */; };
 		040E42401E53577500D85041 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E423F1E53577500D85041 /* NoteViewController.swift */; };
 		040E42431E53579500D85041 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E42421E53579500D85041 /* Note.swift */; };
+		04546C6B1E5B67B0002CD771 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04546C6A1E5B67B0002CD771 /* FontHelper.swift */; };
 		0467D9D01E5384CF006A5CBD /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0467D9CF1E5384CF006A5CBD /* NoteTableViewCell.swift */; };
 		0467D9D71E560888006A5CBD /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0467D9D31E560818006A5CBD /* Lato-Bold.ttf */; };
 		0467D9D81E56088A006A5CBD /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0467D9D21E560811006A5CBD /* Lato-Hairline.ttf */; };
@@ -59,6 +60,7 @@
 		040E423D1E53568E00D85041 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		040E423F1E53577500D85041 /* NoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		040E42421E53579500D85041 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		04546C6A1E5B67B0002CD771 /* FontHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
 		0467D9CF1E5384CF006A5CBD /* NoteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
 		0467D9D21E560811006A5CBD /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
 		0467D9D31E560818006A5CBD /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				040E42411E53578D00D85041 /* Model */,
 				0467D9DC1E562AF2006A5CBD /* Storyboards */,
 				0467D9DD1E562B9C006A5CBD /* Extensions */,
+				04546C691E5B67A0002CD771 /* Helpers */,
 				040E423C1E53564E00D85041 /* Other */,
 				0467D9D11E5607D1006A5CBD /* Resources */,
 			);
@@ -165,6 +168,14 @@
 				04BCC8251E562D120035AAB8 /* PersistentDataStore.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		04546C691E5B67A0002CD771 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04546C6A1E5B67B0002CD771 /* FontHelper.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		0467D9CE1E538490006A5CBD /* Cells */ = {
@@ -345,6 +356,7 @@
 			files = (
 				040E42431E53579500D85041 /* Note.swift in Sources */,
 				040E423E1E53568E00D85041 /* MainViewController.swift in Sources */,
+				04546C6B1E5B67B0002CD771 /* FontHelper.swift in Sources */,
 				04BCC8261E562D120035AAB8 /* PersistentDataStore.swift in Sources */,
 				040E420F1E53561500D85041 /* AppDelegate.swift in Sources */,
 				0467D9D01E5384CF006A5CBD /* NoteTableViewCell.swift in Sources */,
