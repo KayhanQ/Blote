@@ -73,8 +73,7 @@ class MainViewController: UIViewController {
     navigationController?.navigationBar.backgroundColor = UIColor.white
     navigationController?.navigationBar.tintColor = UIColor.orange
     
-    let editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(self.editTapped(_:)))
-    editButton.title = "Select"
+    let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.editTapped(_:)))
     navigationItem.leftBarButtonItem = editButton
     
     let newNote = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(self.newNoteTapped(_:)))
@@ -84,7 +83,7 @@ class MainViewController: UIViewController {
   
   func editTapped(_ onboardingItem: UINavigationItem) {
     if tableView.isEditing {
-      onboardingItem.title = "Select"
+      onboardingItem.title = "Edit"
       tableView.setEditing(false, animated: true)
     } else {
       onboardingItem.title = "Done"
