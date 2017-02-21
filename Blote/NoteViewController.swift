@@ -131,6 +131,8 @@ class NoteViewController: UIViewController {
         mainViewDelegate?.delteNote(note)
       } else if !note.hasUserEnteredTitle && !note.hasUserEnteredBody {
         mainViewDelegate?.delteNote(note)
+      } else if note.isInFirstSession {
+        mainViewDelegate?.noteWasJustCreated(note)
       }
     }
   }

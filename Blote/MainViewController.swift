@@ -10,6 +10,7 @@ import UIKit
 
 protocol MainViewDelegate: class {
   func delteNote(_ note: Note)
+  func noteWasJustCreated(_ note: Note)
 }
 
 class MainViewController: UIViewController {
@@ -59,7 +60,7 @@ class MainViewController: UIViewController {
   }
   
   func createData() {
-    for i in 0..<100 {
+    for i in 0..<10 {
       let note1 = Note()
       note1.title = "Note " + String(i)
       note1.body = "If the above-mentioned international glyphs were not enough, we can also see a set of accents meant to combine with other characters to create diacritics. \nhttps://medium.design/cast-of-characters-17eaa82755cf#.ed8743xvm \n Those include dialytika tonos, itself a combination of dialytika and tonos, indicating that a (Greek) vowel should both pronounced separately (dialytika) and stressed (tonos). Most of the accents beautiful names — circumflex, diaeresis, macron, breve — but my favourite one is ogonek, literally Polish for little tail, used in this language’s ą and ę. \nwww.google.com"
@@ -93,7 +94,8 @@ class MainViewController: UIViewController {
   
   func newNoteTapped(_ onboardingItem: UINavigationItem) {
     let note = Note()
-    persistentDataStore.notes.append(note)
+    note.isInFirstSession = true
+    persistentDataStore.notes.insert(note, at: 0)
     pushNoteVCWithNote(note)
   }
   
@@ -121,7 +123,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     cell.title.attributedText = NSAttributedString(string: note.getDisplayableTitle())
     cell.body.attributedText = NSAttributedString(string: note.body)
     
-    //cell.selectionStyle = .gray
 //    let backgroundView = UIView()
 //    backgroundView.backgroundColor = UIColor.clear
 //    cell.selectedBackgroundView = backgroundView
@@ -156,5 +157,14 @@ extension MainViewController: MainViewDelegate {
   func delteNote(_ note: Note) {
     persistentDataStore.deleteNote(note)
     tableView.reloadData()
+  }
+  
+  func noteWasJustCreated(_ note: Note) {
+    note.isInFirstSession = false
+    tableView.reloadData()
+    let indexPath = IndexPath(row: 0, section: 0)
+
+    tableView.selectRow(at: indexPath, animated: false, scrollPosition: .top)
+    //tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
   }
 }

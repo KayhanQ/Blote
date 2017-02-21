@@ -9,10 +9,17 @@
 import UIKit
 
 class Note {
-  var uid: String!
+  var uid: String {
+    return String(dateCreated)
+  }
+  
   var title: String = ""
   var body: String = ""
+  var isInFirstSession: Bool = false
   
+  var dateCreated: TimeInterval!
+  var dateLastEdited: TimeInterval!
+
   var hasUserEnteredTitle: Bool {
     return !title.isEmpty
   }
@@ -31,7 +38,8 @@ class Note {
   
   init() {
     let now = Date()
-    uid = String(now.timeIntervalSince1970)
+    dateCreated = now.timeIntervalSince1970
+    dateLastEdited = dateCreated
   }
 }
 
